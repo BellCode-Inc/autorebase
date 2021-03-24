@@ -1,4 +1,7 @@
 {
+  "name": "autorebase",
+  "version": "1.0.0",
+  "main": "lib/index.js",
   "dependencies": {
     "debug": "^4.1.1",
     "github-rebase": "^1.1.0",
@@ -20,20 +23,22 @@
     "jest-circus": "^24.8.0",
     "jest-junit": "^6.4.0",
     "prettier": "^1.18.2",
-    "probot": "^9.2.13",
+    "probot": "^11.0.1",
     "smee-client": "^1.1.0",
     "ts-jest": "^24.0.2",
     "tslint": "^5.17.0",
     "tslint-config-prettier": "^1.18.0",
-    "typescript": "^3.5.1"
+    "typescript": "^4.1.3"
   },
   "engines": {
     "node": ">= 8.10.0"
   },
-  "name": "autorebase",
-  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BellCode-Inc/autorebase"
+  },
   "scripts": {
-    "check-build": "tsc --build tsconfig.build.json",
+    "build": "tsc --watch",
     "prettier": "prettier --ignore-path .gitignore \"**/*.{js,json,md,ts,yml}\"",
     "test": "jest",
     "tslint": "tslint --format stylish --project ."

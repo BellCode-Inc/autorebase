@@ -1,5 +1,5 @@
-import * as Octokit from "@octokit/rest";
-import * as createDebug from "debug";
+import Octokit from "@octokit/rest";
+import {  debug } from "debug";
 import { needAutosquashing, rebasePullRequest } from "github-rebase";
 import {
   deleteRef,
@@ -109,7 +109,7 @@ type Permission = "admin" | "write" | "read" | "none";
 
 type CanRebaseOneTime = (permission: Permission) => boolean;
 
-const globalDebug = createDebug("autorebase");
+const globalDebug = debug.log;
 
 const merge = async ({
   debug,
@@ -354,7 +354,7 @@ const rebaseOneTime = async ({
     repo,
     username,
   });
-  if (canRebaseOneTime(permission)) {
+  if (canRebaseOneTime(permission as Permission)) {
     await rebase({
       debug,
       octokit,
@@ -393,7 +393,7 @@ const autorebase = async ({
   owner: RepoOwner;
   repo: RepoName;
 }): Promise<Action> => {
-  const debug = globalDebug.extend(event.id);
+  const debug = globalDebug;
   debug("received event", { event, label });
 
   if (event.name === "issue_comment") {

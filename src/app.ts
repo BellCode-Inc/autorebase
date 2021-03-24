@@ -1,5 +1,5 @@
-import * as Octokit from "@octokit/rest";
-import { Application } from "probot";
+import Octokit from "@octokit/rest";
+import { Probot, ApplicationFunctionOptions } from "probot";
 
 import { Action, autorebase, CanRebaseOneTime, Event } from "./autorebase";
 import { LabelName } from "./utils";
@@ -21,7 +21,7 @@ type Options = {
   label: LabelName;
 };
 
-const createApplicationFunction = (options: Options) => (app: Application) => {
+const createApplicationFunction = (options: Options) => (app: Probot, _: ApplicationFunctionOptions) => {
   app.log("App loaded");
 
   app.on(
@@ -39,6 +39,7 @@ const createApplicationFunction = (options: Options) => (app: Application) => {
         id: context.id,
         // @ts-ignore The event is of the good type because Autorebase only subscribes to a subset of webhooks.
         name: context.name,
+        // @ts-ignore
         payload: context.payload,
       };
       const handlerResult = await options.handleEvent(event);
@@ -52,7 +53,7 @@ const createApplicationFunction = (options: Options) => (app: Application) => {
           forceRebase,
           label: options.label,
           // The value is the good one even if the type doesn't match.
-          octokit: (context.github as any) as Octokit,
+          octokit: (context.octokit as any) as Octokit,
           owner,
           repo,
         });
